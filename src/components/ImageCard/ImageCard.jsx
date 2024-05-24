@@ -1,13 +1,26 @@
 import css from "./ImageCard.module.css";
 
-export default function ImageCard() {
+export default function ImageCard({
+  image,
+  image: {
+    urls: { small },
+    user: { first_name, last_name },
+    likes,
+    created_at,
+  },
+  onModal,
+}) {
+  const handleClick = (image) => {
+    onModal(image);
+  };
+
   return (
-    <div className={css.container}>
-      <img className={css.image} src="" alt="An image" />
+    <div className={css.container} onClick={() => handleClick(image)}>
+      <img className={css.image} src={small} alt="Image" />
       <div className={css.description}>
-        <p className={css.text}>Description</p>
-        <p className={css.text}>Author</p>
-        <span className={css.date}>12.06.2024</span>
+        <p className={css.text}>{`${first_name} ${last_name}`}</p>
+        <p className={css.text}>{likes}</p>
+        <span className={css.date}>{created_at}</span>
       </div>
     </div>
   );
