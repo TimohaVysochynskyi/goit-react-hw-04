@@ -2,8 +2,12 @@ import css from "./ImageModal.module.css";
 
 export default function ImageModal({
   data: {
-    user: { first_name },
+    created_at,
+    description,
+    urls: { regular },
+    likes,
+    user: { name },
   },
 }) {
-  return <>{first_name}</>;
+  return <>{name}</>;
 }

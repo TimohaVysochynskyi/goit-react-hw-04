@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { fetchImagesWithName } from "../../images-api.js";
 
@@ -15,24 +15,45 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [modal, setModal] = useState(false);
+
+  const [isModal, setIsModal] = useState(false);
+  const [modalData, setModalData] = useState([]);
+
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (query.trim() === "") {
+      return;
+    }
+
+    async function fetchArticles() {
+      try {
+        setError(false);
+        setLoading(true);
+        const data = await fetchImagesWithName(query, page);
+        setImages((prevState) => [...prevState, ...data]);
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchArticles();
+  }, [page, query]);
 
   const handleSearch = async (input) => {
-    try {
-      setImages([]);
-      setError(false);
-      setLoading(true);
-      const data = await fetchImagesWithName(input);
-      setImages(data);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    setQuery(input);
+    setPage(1);
   };
 
-  const handleModal = (data) => {
-    setModal(data);
+  const handleModal = async (data) => {
+    setIsModal(true);
+    setModalData(data);
+  };
+
+  const handleLoadMore = async () => {
+    setPage(page + 1);
   };
 
   return (
@@ -42,11 +63,13 @@ export default function App() {
         {loading && <Loader />}
         {error && <ErrorMessage />}
         {images.length > 0 && (
-          <ImageGallery images={images} onModal={handleModal} />
+          <>
+            <ImageGallery images={images} onModal={handleModal} />
+            <LoadMoreBtn onClick={handleLoadMore} disabled={loading} />
+          </>
         )}
-        <LoadMoreBtn />
       </main>
-      {modal != false && <ImageModal data={modal} />}
+      {isModal != false && <ImageModal data={modalData} />}
     </>
   );
 }
