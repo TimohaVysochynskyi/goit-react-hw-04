@@ -13,4 +13,11 @@
     background-color: #efefef;
     box-shadow: 0px 0px 6px #dfdfdf;
     border-radius: 6px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.item:hover {
+    box-shadow: 0px 0px 8px #efefef;
+    transform: scale(1.01);
 }

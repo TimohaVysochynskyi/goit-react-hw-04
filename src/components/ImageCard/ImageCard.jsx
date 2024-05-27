@@ -9,14 +9,10 @@ export default function ImageCard({
     likes,
     created_at,
   },
-  onModal,
+  openModal,
 }) {
-  const handleClick = (image) => {
-    onModal(image);
-  };
-
   return (
-    <div className={css.container} onClick={() => handleClick(image)}>
+    <div className={css.container} onClick={() => openModal(image)}>
       <img className={css.image} src={small} alt="Image" />
       <div className={css.description}>
         <p className={css.text}>{name}</p>

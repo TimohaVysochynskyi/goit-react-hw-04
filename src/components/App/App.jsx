@@ -48,17 +48,19 @@ export default function App() {
     setPage(1);
   };
 
-  const handleModal = async (data) => {
+  const handleLoadMore = async () => {
+    setPage(page + 1);
+  };
+
+  const handleModalOpen = async (data) => {
     setIsModal(true);
     setModalData(data);
   };
-  const handleCloseModal = async () => {
+
+  const handleModalClose = async () => {
     setIsModal(false);
     setModalData([]);
-  };
-
-  const handleLoadMore = async () => {
-    setPage(page + 1);
+    console.log("Closed");
   };
 
   return (
@@ -68,14 +70,18 @@ export default function App() {
         {loading && <Loader />}
         {error && <ErrorMessage />}
         {images.length > 0 && (
-          <ImageGallery images={images} onModal={handleModal} />
+          <ImageGallery images={images} openModal={handleModalOpen} />
         )}
         {images.length > 5 && (
           <LoadMoreBtn onClick={handleLoadMore} disabled={loading} />
         )}
       </main>
-      {isModal != false && (
-        <ImageModal data={modalData} onClose={handleCloseModal} />
+      {isModal && (
+        <ImageModal
+          data={modalData}
+          isOpen={isModal}
+          onClose={handleModalClose}
+        />
       )}
     </>
   );
