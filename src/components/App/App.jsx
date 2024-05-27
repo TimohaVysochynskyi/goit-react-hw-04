@@ -43,6 +43,7 @@ export default function App() {
   }, [page, query]);
 
   const handleSearch = async (input) => {
+    setImages([]);
     setQuery(input);
     setPage(1);
   };
@@ -50,6 +51,10 @@ export default function App() {
   const handleModal = async (data) => {
     setIsModal(true);
     setModalData(data);
+  };
+  const handleCloseModal = async () => {
+    setIsModal(false);
+    setModalData([]);
   };
 
   const handleLoadMore = async () => {
@@ -63,13 +68,15 @@ export default function App() {
         {loading && <Loader />}
         {error && <ErrorMessage />}
         {images.length > 0 && (
-          <>
-            <ImageGallery images={images} onModal={handleModal} />
-            <LoadMoreBtn onClick={handleLoadMore} disabled={loading} />
-          </>
+          <ImageGallery images={images} onModal={handleModal} />
+        )}
+        {images.length > 5 && (
+          <LoadMoreBtn onClick={handleLoadMore} disabled={loading} />
         )}
       </main>
-      {isModal != false && <ImageModal data={modalData} />}
+      {isModal != false && (
+        <ImageModal data={modalData} onClose={handleCloseModal} />
+      )}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import css from "./ImageCard.module.css";
 import { FcLike } from "react-icons/fc";
+
 export default function ImageCard({
   image,
   image: {
